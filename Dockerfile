@@ -1,4 +1,4 @@
-FROM jupyter/base-notebook
+FROM jupyter/base-notebook:hub-1.0.0
 
 LABEL maintainer="Luka Cehovin Zajc <luka.cehovin@gmail.com>"
 
@@ -10,10 +10,9 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 USER $NB_UID
-
+#    'conda-forge::blas=*=openblas' \
 # Install Python 3 packages
 RUN conda install --quiet --yes \
-    'conda-forge::blas=*=openblas' \
     'ipywidgets=7.5*' \
     'matplotlib-base=3.1.*' \
     'pandas=0.25*' \
@@ -21,6 +20,12 @@ RUN conda install --quiet --yes \
     'scikit-learn=0.21*' \
     'scikit-video=1.1*' \
     'scipy=1.3*' \
+    'librosa=0.7' \
+    'nltk=3.4.5' \
+    'pytorch=1.2*' \
+    'torchvision=0.4*' \
+    'cpuonly' \
+    '-c pytorch' \
     && \
     conda clean --all -f -y && \
     # Activate ipywidgets extension in the environment that runs the notebook server
