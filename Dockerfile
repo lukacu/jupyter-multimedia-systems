@@ -25,6 +25,7 @@ RUN conda install --quiet --yes \
     'pytorch=1.2*' \
     'opencv=4.*' \
     'torchvision=0.4.2' \
+    'pillow<7 ' \
     'cpuonly' \
     '-c pytorch' \
     && \
