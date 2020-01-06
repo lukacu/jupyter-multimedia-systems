@@ -22,9 +22,9 @@ RUN conda install --quiet --yes \
     'scipy=1.3*' \
     'librosa=0.7' \
     'nltk=3.4.5' \
-    'pytorch=1.2*' \
+    'pytorch=1.2' \
     'opencv=4.*' \
-    'torchvision=0.4.2' \
+    'torchvision=0.4' \
     'pillow<7 ' \
     'cpuonly' \
     '-c pytorch' \
