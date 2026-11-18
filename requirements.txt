@@ -1,0 +1,21 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+audioread==3.1.0
+av==18.1.0
+ffmpeg-python==0.2.0
+ImageIO==2.38.2
+lazy-loader==0.6
+librosa==0.11.0
+matplotlib==3.9.2
+nltk==3.8.1
+numba==0.68.1
+numpy==2.2.6
+opencv-python-headless==4.14.0.94
+pandas==2.2.3
+scikit-image==0.24.0
+scikit-learn==1.5.2
+scikit-video==1.1.11
+scipy==1.14.1
+torch==2.5.0+cpu
+torchvision==0.20.0+cpu
+videoio==0.3.0

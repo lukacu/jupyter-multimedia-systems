@@ -1,4 +1,4 @@
-FROM jupyter/base-notebook:hub-1.0.0
+FROM jupyter/base-notebook:hub-4.0.2
 
 LABEL maintainer="Luka Cehovin Zajc <luka.cehovin@gmail.com>"
 
@@ -10,24 +10,10 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 USER $NB_UID
-#    'conda-forge::blas=*=openblas' \
-# Install Python 3 packages
-RUN conda install --quiet --yes \
-    'ipywidgets=7.5*' \
-    'matplotlib-base=3.1.*' \
-    'pandas=0.25*' \
-    'scikit-image=0.15*' \
-    'scikit-learn=0.21*' \
-    'scikit-video=1.1*' \
-    'scipy=1.3*' \
-    'librosa=0.7' \
-    'nltk=3.4.5' \
-    'pytorch=1.2' \
-    'opencv=4.*' \
-    'torchvision=0.4' \
-    'pillow<7 ' \
-    'cpuonly' \
-    '-c pytorch' \
+
+RUN conda install --yes \
+    'ipywidgets==8.1.*' \
+    'jupyter_contrib_nbextensions==0.7.*' \
     && \
     conda clean --all -f -y && \
     # Activate ipywidgets extension in the environment that runs the notebook server
@@ -38,12 +24,21 @@ RUN conda install --quiet --yes \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
 
+COPY requirements.txt /tmp/requirements.txt
+
+RUN pip --no-cache-dir install --requirement /tmp/requirements.txt
+
 # Import matplotlib the first time to build the font cache.
-ENV XDG_CACHE_HOME /home/$NB_USER/.cache/
+ENV XDG_CACHE_HOME=/home/$NB_USER/.cache/
 RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot" && \
     fix-permissions /home/$NB_USER
 
-COPY jupyter_notebook_config.py /home/$NB_USER/
+COPY --chown=$NB_UID:$NB_GID jupyter_notebook_config.py /home/$NB_USER/
+
+RUN mkdir -p /home/$NB_USER/.ipython/profile_default/startup/
+
+# Disable Numba because of librosa errors
+#ENV NUMBA_DISABLE_JIT=1
 
 USER $NB_UID
 
